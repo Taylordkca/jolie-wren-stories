@@ -10,7 +10,7 @@ function closeMenu(){ $('drawer').classList.remove('open');$('drawer').setAttrib
 function storePosition(){if(view!=='reader'||!story)return;const els=[...document.querySelectorAll('[data-block]')];let nearest=els[0];for(const el of els){if(el.getBoundingClientRect().top<=innerHeight*.38)nearest=el;else break}if(nearest){progress[story.id]={episode:Number(nearest.dataset.episode),block:Number(nearest.dataset.block),updated:Date.now()};localStorage.setItem('jolie-progress',JSON.stringify(progress))}}
 function restorePosition(){const p=progress[story.id];if(!p)return;const target=document.querySelector(`[data-episode="${p.episode}"][data-block="${p.block}"]`);if(target)requestAnimationFrame(()=>target.scrollIntoView({block:'start',behavior:'instant'}))}
 function navigate(next,episode=0,restore=false){storePosition();view=next;currentEpisode=episode;closeMenu();render();if(restore)restorePosition();else scrollTo(0,0)}
-async function selectStory(id,episode=0,restore=false){storePosition();const entry=catalog.find(x=>x.id===id);if(!entry)return;try{const r=await fetch(entry.file);if(!r.ok)throw Error('Story file missing: '+entry.file);const data=await r.json();if(!Array.isArray(data.episodes))throw Error('Invalid episodes');story=data;const state=readState(id);if(state==='want')localStorage.setItem('jolie-status-'+id,JSON.stringify('reading'));view='reader';currentEpisode=episode;closeMenu();render();if(restore)restorePosition();else scrollTo(0,0)}catch(e){$('app').innerHTML='<div class=error>'+esc(e.message)+'</div>'}}
+async function selectStory(id,episode=0,restore=false){storePosition();const entry=catalog.find(x=>x.id===id);if(!entry)return;try{const data=entry.cloud ? await loadCloudStory(entry.cloud) : await (async()=>{const r=await fetch(entry.file);if(!r.ok)throw Error('Story file missing: '+entry.file);return r.json()})();if(!Array.isArray(data.episodes))throw Error('Invalid episodes');story=data;const state=readState(id);if(state==='want')localStorage.setItem('jolie-status-'+id,JSON.stringify('reading'));view='reader';currentEpisode=episode;closeMenu();render();if(restore)restorePosition();else scrollTo(0,0)}catch(e){$('app').innerHTML='<div class=error>'+esc(e.message)+'</div>'}}
 const readState=id=>safeRead('jolie-status-'+id,'want');const setState=(id,v)=>{localStorage.setItem('jolie-status-'+id,JSON.stringify(v));render()};const isLiked=id=>safeRead('jolie-like-'+id,false);const setLike=id=>{localStorage.setItem('jolie-like-'+id,JSON.stringify(!isLiked(id)));render()};
 function readingTime(ep){const words=ep.blocks.map(b=>b.text||'').join(' ').trim().split(/\s+/).filter(Boolean).length;return Math.max(1,Math.ceil(words/220))}
 function tags(items){return (items||[]).map(t=>`<span class="tag">${esc(t)}</span>`).join('')}
@@ -38,4 +38,25 @@ $('homeBtn').onclick=()=>navigate('home');$('menuBtn').onclick=openMenu;$('close
 for(const [id,key] of [['modeSetting','mode'],['themeSetting','theme'],['fontSetting','font'],['sizeSetting','size'],['skipSetting','skip']])$(id).addEventListener(key==='size'?'input':'change',e=>{if(key==='mode')storePosition();prefs[key]=key==='skip'?e.target.checked:key==='size'?Number(e.target.value):e.target.value;savePrefs();applyPrefs();if(key==='mode'){const p=progress[story.id];if(view==='reader'){currentEpisode=p?.episode??currentEpisode;render();restorePosition()}}else if(key==='skip')render()});
 window.addEventListener('scroll',()=>{clearTimeout(scrollTimer);scrollTimer=setTimeout(storePosition,250)},{passive:true});
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeMenu()});
-fetch('stories/catalog.json').then(r=>{if(!r.ok)throw Error('Could not load stories/catalog.json');return r.json()}).then(data=>{if(!Array.isArray(data.stories))throw Error('Catalog must contain a stories array');catalog=data.stories;applyPrefs();render()}).catch(err=>{$('app').innerHTML=`<div class="error"><h2>Couldn't load the story catalog</h2><p>${esc(err.message)}</p><p>Upload the complete stories folder, including catalog.json.</p></div>`});
+fetch('stories/catalog.json').then(r=>{if(!r.ok)throw Error('Could not load stories/catalog.json');return r.json()}).then(data=>{if(!Array.isArray(data.stories))throw Error('Catalog must contain a stories array');catalog=data.stories;applyPrefs();render();loadCloudCatalog().then(()=>render()).catch(err=>console.warn('Cloud catalog unavailable:',err.message))}).catch(err=>{$('app').innerHTML=`<div class="error"><h2>Couldn't load the story catalog</h2><p>${esc(err.message)}</p><p>Upload the complete stories folder, including catalog.json.</p></div>`});
+
+// V0.4: read ONLY publicly accessible free stories and episodes; Supabase RLS enforces this.
+const jolieDb = window.supabase && window.JOLIE_SUPABASE_URL && window.JOLIE_SUPABASE_PUBLISHABLE_KEY
+  ? window.supabase.createClient(window.JOLIE_SUPABASE_URL,window.JOLIE_SUPABASE_PUBLISHABLE_KEY) : null;
+async function loadCloudCatalog(){
+ if(!jolieDb)return;
+ const {data,error}=await jolieDb.from('stories').select('id,slug,title,description,tags,type,typical_spice,published_at').eq('status','published').eq('access','free');
+ if(error)throw error;
+ const live=(data||[]).map(x=>({id:x.slug,cloud:x.id,title:x.title,description:x.description,tags:x.tags||[],type:x.type,spice:x.typical_spice,release:'New',access:'free',date:(x.published_at||'').slice(0,10),views:0,likes:0}));
+ // Database version replaces the corresponding static catalog entry, preventing duplicates.
+ const ids=new Set(live.map(x=>x.id));catalog=[...catalog.filter(x=>!ids.has(x.id)),...live];
+}
+async function loadCloudStory(storyId){
+ if(!jolieDb)throw Error('Cloud database is unavailable.');
+ const {data:meta,error:me}=await jolieDb.from('stories').select('slug,title,description,tags').eq('id',storyId).single();
+ if(me)throw me;
+ const {data:eps,error:ee}=await jolieDb.from('episodes').select('episode_number,title,content,warnings,spice,author_note').eq('story_id',storyId).eq('status','published').eq('access','free').order('episode_number');
+ if(ee)throw ee;
+ if(!eps?.length)throw Error('No published episodes are available.');
+ return {id:meta.slug,title:meta.title,description:meta.description,tags:meta.tags||[],warnings:[],episodes:eps.map((e,i)=>({id:`episode-${e.episode_number}`,title:e.title,blocks:e.content||[],warnings:e.warnings||[],spice:e.spice,notes:e.author_note||''}))};
+}
