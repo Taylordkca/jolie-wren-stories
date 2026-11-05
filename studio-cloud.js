@@ -55,15 +55,28 @@ async function openStory(story){
  if(storyError){note(storyError.message);return;}
  const {data:eps,error:epError}=await client.from('episodes').select('*').eq('story_id',story.id).order('episode_number',{ascending:true});
  if(epError){note(epError.message);return;}
- state={...blank(),storyTitle:detail.title,storyId:detail.slug,description:detail.description||'',storyType:detail.type,access:detail.access,storySpice:String(detail.typical_spice),tags:(detail.tags||[]).join(', '),episodes:(eps||[]).map((e,i)=>({...blankEpisode(i+1),title:e.title,spice:e.spice,warnings:(e.warnings||[]).join(', '),manuscript:manuscriptFromBlocks(e.content),notes:e.author_note||''})),selected:0};
+ state={...blank(),storyTitle:detail.title,storyId:detail.slug,description:detail.description||'',storyType:detail.type,access:detail.access,storySpice:String(detail.typical_spice),tags:(detail.tags||[]).join(', '),episodes:(eps||[]).map((e,i)=>({...blankEpisode(i+1),title:e.title,spice:e.spice,warnings:(e.warnings||[]).join(', '),manuscript:manuscriptFromBlocks(e.content),notes:e.author_note||'',publishAt:e.scheduled_for?new Date(e.scheduled_for).toLocaleString('sv-SE',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit'}).replace(' ','T'):'',pollQuestion:e.poll_data?.question||'',pollOptions:(e.poll_data?.options||[]).join('\n'),fallback:e.poll_data?.authorFallback==null?'':String(e.poll_data.authorFallback),pollClose:e.poll_data?.closesAtEastern||'',pollStatus:e.poll_data?.status||'draft'})),selected:0};
  if(!state.episodes.length)state.episodes=[blankEpisode(1)];
  loadedStoryId=detail.id;loadedStatus=detail.status;
- render();scheduleSave();note(`Opened "${detail.title}" (${detail.status}). Poll and scheduling metadata are not yet restored by this version; check your manuscript backup.`);
+ render();scheduleSave();note(`Opened "${detail.title}" (${detail.status}). Poll and scheduling metadata restored when present. Scheduling is metadata only, not automatic publication.`);
 }
 $('cloudRefresh').onclick=loadLibrary;
 for(const id of ['cloudSearch','cloudFilter','cloudSort'])$(id).addEventListener(id==='cloudSearch'?'input':'change',renderLibrary);
 $('cloudNew').onclick=()=>{if(!confirm('Start a new story? Save or export current changes first.'))return;state=blank();loadedStoryId=null;loadedStatus=null;render();scheduleSave();note('New story started.');};
 
+// Interpret author-entered wall-clock time as America/New_York, including DST.
+function easternToUTC(local){
+ const m=String(local).match(/^(\d{4})-(\d{2})-(\d{2})T(\d{2}):(\d{2})$/);
+ if(!m)throw Error('Invalid Eastern scheduling date/time.');
+ const [y,mo,d,h,mi]=m.slice(1).map(Number);
+ const target=Date.UTC(y,mo-1,d,h,mi);
+ const fmt=new Intl.DateTimeFormat('en-US',{timeZone:'America/New_York',year:'numeric',month:'2-digit',day:'2-digit',hour:'2-digit',minute:'2-digit',hourCycle:'h23'});
+ function parts(ms){const p=Object.fromEntries(fmt.formatToParts(ms).map(x=>[x.type,Number(x.value)]));return Date.UTC(p.year,p.month-1,p.day,p.hour,p.minute)}
+ const matches=[];
+ for(let offset=-300;offset<=-240;offset+=60){const candidate=target-offset*60000;if(parts(candidate)===target)matches.push(candidate)}
+ if(matches.length!==1)throw Error('Eastern scheduling time is ambiguous or nonexistent due to daylight saving time. Choose a different time.');
+ return new Date(matches[0]).toISOString();
+}
 async function upload(publish){
  if(!currentUser){note('Sign in first.');return;}
  sync();let data;
@@ -88,7 +101,7 @@ async function upload(publish){
    // Only edit matching episode numbers. Never delete other saved episodes automatically.
    for(let i=0;i<data.episodes.length;i++){
      const ep=data.episodes[i];
-     const row={story_id:storyId,episode_number:i+1,title:ep.title,content:ep.blocks,warnings:ep.warnings||[],spice:ep.spice,author_note:ep.notes||'',access:'free',status:publish?'published':'draft',published_at:publish?now:null,updated_at:now};
+     const row={story_id:storyId,episode_number:i+1,title:ep.title,content:ep.blocks,warnings:ep.warnings||[],spice:ep.spice,author_note:ep.notes||'',poll_data:ep.poll||null,scheduled_for:ep.scheduledAtEastern?easternToUTC(ep.scheduledAtEastern):null,access:'free',status:publish?'published':'draft',published_at:publish?now:null,updated_at:now};
      const {error}=await client.from('episodes').upsert(row,{onConflict:'story_id,episode_number'});
      if(error)throw error;
    }
