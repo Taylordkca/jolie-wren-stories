@@ -1,0 +1,44 @@
+{
+  "id": "testing-this",
+  "title": "Testing this",
+  "description": "a simply naughty test",
+  "tags": [
+    "Poly"
+  ],
+  "warnings": [
+    "Strong Language"
+  ],
+  "episodes": [
+    {
+      "id": "episode-1",
+      "title": "Test Episode 1",
+      "spice": 3,
+      "blocks": [
+        {
+          "type": "chapter",
+          "title": "Chapter One"
+        },
+        {
+          "type": "text",
+          "text": "Age: 40 Home: Jacksonville, Florida Partner: Rachel Cat: Kat Career: Sales Interests: Fitness, good food, new experiences, and falling in love."
+        },
+        {
+          "type": "chapter",
+          "title": "Chapter Two"
+        }
+      ],
+      "notes": "Thanks for reading! What did you think?",
+      "poll": {
+        "question": "So Reader... What happens next?",
+        "options": [
+          "More Tests",
+          "Tests Complete!"
+        ],
+        "authorFallback": 1,
+        "closesAtEastern": "2026-11-05T22:00",
+        "status": "scheduled"
+      },
+      "scheduledAtEastern": "2026-11-04T20:20"
+    }
+  ]
+}
