@@ -1,0 +1,52 @@
+{
+  "id": "the-midnight-letter",
+  "title": "The Midnight Letter",
+  "subtitle": "A sample story for testing the Jolie Wren reader",
+  "description": "A mysterious letter, a midnight meeting, and a choice that changes everything. Replace this sample with your own fiction whenever you're ready.",
+  "tags": ["Romance", "Mystery", "Interactive"],
+  "warnings": ["Romantic themes", "Mild language"],
+  "episodes": [
+    {
+      "id": "episode-1",
+      "title": "The Letter",
+      "spice": 0,
+      "notes": "This is a placeholder author note. Your real episodes can include personal updates, behind-the-scenes details, or questions for readers.",
+      "blocks": [
+        {"type": "chapter", "title": "Chapter One"},
+        {"type": "text", "text": "The letter arrived on a Tuesday, which seemed terribly ordinary for something that would change my life."},
+        {"type": "text", "text": "There was no return address. Only my name, written in a slanted hand I knew I had seen before. The envelope smelled faintly of rain and lavender."},
+        {"type": "text", "text": "Inside was a single sheet of paper. Meet me at the old greenhouse at midnight. Come alone. Beneath it, one word: Please."},
+        {"type": "text", "text": "I read the message three times before I realized I was smiling. That was the most worrying part."}
+      ],
+      "poll": {"question": "What should our narrator do?", "options": ["Go to the greenhouse", "Call an old friend", "Ignore the letter"]}
+    },
+    {
+      "id": "episode-2",
+      "title": "The Greenhouse",
+      "spice": 2,
+      "warnings": ["Suggestive romance"],
+      "notes": "Try switching reading modes while you're halfway through this episode. You can also test the explicit-content preference here.",
+      "blocks": [
+        {"type": "text", "text": "At eleven fifty-nine, I stood outside the greenhouse, listening to the rain tick against its glass roof."},
+        {"type": "text", "text": "Someone had left a lantern burning inside. The door was unlocked. That should have made me feel better, but it didn't."},
+        {"type": "chapter", "title": "Chapter Two"},
+        {"type": "text", "text": "A familiar voice said my name. I turned, and there she was: the one person I'd convinced myself I would never see again."},
+        {"type": "spicy", "label": "A Kiss in the Rain", "text": "She stepped close enough that I could feel the warmth of her breath. When she kissed me, the years between us seemed to vanish. We stayed together beneath the greenhouse roof, talking softly and holding each other until the rain eased.", "recap": "They share a long-awaited kiss and reconnect in the greenhouse."},
+        {"type": "text", "text": "Then she reached into her coat and produced a second envelope. This one had a photograph inside. And the person in it looked exactly like me."}
+      ],
+      "poll": {"question": "What is the secret behind the photograph?", "options": ["A forgotten family connection", "A time-travel mystery", "An elaborate deception"]}
+    },
+    {
+      "id": "episode-3",
+      "title": "A Different Reflection",
+      "spice": 0,
+      "notes": "This is the final sample episode. The previous/next controls should stop at the ends of the available story.",
+      "blocks": [
+        {"type": "text", "text": "I stared at the photograph. The woman wore a coat that had gone out of fashion decades before I was born."},
+        {"type": "text", "text": "She had my eyes. My smile. Even the little scar just below her chin."},
+        {"type": "text", "text": "Outside, the rain stopped. Inside, the lantern flickered, and a door I hadn't noticed began to open."},
+        {"type": "text", "text": "Whatever happened next, I knew I wouldn't be going home the same person."}
+      ]
+    }
+  ]
+}
