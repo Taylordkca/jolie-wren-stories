@@ -7,6 +7,7 @@ const client = window.supabase.createClient(window.JOLIE_SUPABASE_URL, window.JO
 let currentUser = null;
 let loadedStoryId = null;
 let loadedStatus = null;
+let libraryCache=[];
 function showLogin(user) { currentUser=user; $('cloudLoggedOut').hidden=!!user; $('cloudLoggedIn').hidden=!user; $('cloudIdentity').textContent=user ? `Signed in: ${user.email}` : ''; }
 async function refresh() {
  const {data:{user},error} = await client.auth.getUser();
@@ -32,8 +33,19 @@ async function loadLibrary(){
  if(!currentUser)return;
  const {data,error}=await client.from('stories').select('id,slug,title,status,updated_at').eq('owner_id',currentUser.id).order('updated_at',{ascending:false});
  if(error){note('Could not load library: '+error.message);return;}
- if(!data?.length){root.textContent='No cloud stories yet.';return;}
- for(const story of data){const row=document.createElement('div');row.className='cloud-story-row';const b=document.createElement('button');b.type='button';b.className='secondary';b.textContent=`Open · ${story.title} (${story.status})`;b.onclick=()=>openStory(story);row.append(b);root.append(row);}
+ libraryCache=data||[];renderLibrary();
+}
+function renderLibrary(){
+ const root=$('cloudLibraryList');root.replaceChildren();
+ const term=($('cloudSearch')?.value||'').toLowerCase().trim(),filter=$('cloudFilter')?.value||'all',sort=$('cloudSort')?.value||'updated';
+ let rows=libraryCache.filter(x=>(!term||`${x.title} ${x.slug}`.toLowerCase().includes(term))&&(filter==='all'||x.status===filter));
+ if(sort==='az')rows.sort((a,b)=>a.title.localeCompare(b.title));
+ else if(sort==='za')rows.sort((a,b)=>b.title.localeCompare(a.title));
+ else rows.sort((a,b)=>String(b.updated_at||'').localeCompare(String(a.updated_at||'')));
+ $('cloudCount').textContent=`${rows.length} of ${libraryCache.length} stories`;
+ if(!rows.length){root.textContent=libraryCache.length?'No matching stories.':'No cloud stories yet.';return;}
+ for(const story of rows){const row=document.createElement('div');row.className='cloud-story-row';const b=document.createElement('button');b.type='button';b.className='secondary';b.textContent=`Open · ${story.title} (${story.status})`;b.onclick=()=>openStory(story);row.append(b);root.append(row);}
+
 }
 async function openStory(story){
  if(!currentUser)return;
@@ -49,13 +61,15 @@ async function openStory(story){
  render();scheduleSave();note(`Opened "${detail.title}" (${detail.status}). Poll and scheduling metadata are not yet restored by this version; check your manuscript backup.`);
 }
 $('cloudRefresh').onclick=loadLibrary;
+for(const id of ['cloudSearch','cloudFilter','cloudSort'])$(id).addEventListener(id==='cloudSearch'?'input':'change',renderLibrary);
 $('cloudNew').onclick=()=>{if(!confirm('Start a new story? Save or export current changes first.'))return;state=blank();loadedStoryId=null;loadedStatus=null;render();scheduleSave();note('New story started.');};
 
 async function upload(publish){
  if(!currentUser){note('Sign in first.');return;}
  sync();let data;
- try { data=build(); } catch(e) { note(e.message); return; }
+ try { data=build(!publish); } catch(e) { note(e.message); return; }
  if(!publish && loadedStatus==='published'){note('This story is published. Save Draft would unpublish it, so the operation was blocked. Use Publish to update public content, or create a new story.');return;}
+ if(publish && data.episodes.some(e=>!e.blocks.length)){note('Finish every episode before publishing. Empty episodes are allowed in drafts.');return;}
  if(publish && state.access!=='free'){note('Premium publishing is disabled until protected reader access is implemented.');return;}
  if(publish && !confirm('Publish this FREE story and ALL its episodes immediately? They will be readable by everyone.'))return;
  $('cloudSave').disabled=$('cloudPublish').disabled=true;

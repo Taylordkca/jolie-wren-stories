@@ -3,3 +3,5 @@
 .cloud-panel{border:1px solid #dfcfc4;border-radius:12px;padding:18px;margin:18px 0;background:#fffaf6}.cloud-panel label{display:block;margin:8px 0}.cloud-panel input{width:100%}#cloudStatus{font-weight:600;white-space:pre-wrap}
 
 .cloud-library{margin:1rem 0;padding:1rem;border:1px solid #e8ddd1;border-radius:10px}.cloud-story-row{margin:.5rem 0}.cloud-story-row button{max-width:100%;white-space:normal;text-align:left}
+
+.cloud-library-controls{display:grid;grid-template-columns:minmax(0,1fr) 150px 150px;gap:8px;align-items:end}.cloud-library-controls input,.cloud-library-controls select{min-width:0;width:100%;padding:10px;border:1px solid #dfcfc4;border-radius:8px;background:#fff}.studio-preview p{margin:0 0 1em}@media(max-width:680px){.cloud-library-controls{grid-template-columns:1fr}}
