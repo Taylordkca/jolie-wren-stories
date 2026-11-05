@@ -31,3 +31,8 @@ Real shared vote totals, public likes/views, site-wide splash count, authenticat
 ## Google Docs authoring
 
 For now, prepare one episode per tab and export/paste content into the JSON format. A mobile-friendly importer will come in a later milestone. The existing `chapter`, `text`, and `spicy` block formats are demonstrated in `stories/sample.json`.
+
+
+## Publishing Studio V0.3
+
+Open `studio.html` to paste or import episodes and export compatible JSON. Read `STUDIO-GUIDE.md` before uploading. This is a prototype, not a secure author dashboard or automated publisher.
