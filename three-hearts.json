@@ -1,0 +1,37 @@
+{
+  "id": "three-hearts",
+  "title": "Three Hearts, One Spell",
+  "description": "A magical romance with more than one happily ever after.",
+  "tags": [
+    "Fantasy",
+    "MM",
+    "Poly",
+    "Why Choose",
+    "Magic"
+  ],
+  "warnings": [
+    "Sample fiction"
+  ],
+  "episodes": [
+    {
+      "id": "episode-1",
+      "title": "A First Glimpse",
+      "spice": 5,
+      "notes": "Placeholder episode for testing the library. Replace this with your own writing.",
+      "blocks": [
+        {
+          "type": "chapter",
+          "title": "Chapter One"
+        },
+        {
+          "type": "text",
+          "text": "This is a placeholder for Three Hearts, One Spell. It demonstrates how each story can have its own episodes, tags, spice rating, and reading progress."
+        },
+        {
+          "type": "text",
+          "text": "When you are ready to publish, replace this sample with your real manuscript. You can add more episodes without changing the website layout."
+        }
+      ]
+    }
+  ]
+}

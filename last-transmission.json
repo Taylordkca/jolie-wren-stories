@@ -1,0 +1,36 @@
+{
+  "id": "last-transmission",
+  "title": "The Last Transmission",
+  "description": "A quiet signal becomes a connection across the void.",
+  "tags": [
+    "Sci-Fi",
+    "MM",
+    "NB",
+    "Slow Burn"
+  ],
+  "warnings": [
+    "Sample fiction"
+  ],
+  "episodes": [
+    {
+      "id": "episode-1",
+      "title": "A First Glimpse",
+      "spice": 1,
+      "notes": "Placeholder episode for testing the library. Replace this with your own writing.",
+      "blocks": [
+        {
+          "type": "chapter",
+          "title": "Chapter One"
+        },
+        {
+          "type": "text",
+          "text": "This is a placeholder for The Last Transmission. It demonstrates how each story can have its own episodes, tags, spice rating, and reading progress."
+        },
+        {
+          "type": "text",
+          "text": "When you are ready to publish, replace this sample with your real manuscript. You can add more episodes without changing the website layout."
+        }
+      ]
+    }
+  ]
+}

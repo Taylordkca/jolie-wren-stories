@@ -1,0 +1,142 @@
+{
+  "stories": [
+    {
+      "id": "the-midnight-letter",
+      "file": "stories/sample.json",
+      "title": "The Midnight Letter",
+      "description": "A mysterious letter, a midnight meeting, and a choice that changes everything. Replace this sample with your own fiction whenever you're ready.",
+      "tags": [
+        "Romance",
+        "Mystery",
+        "Interactive"
+      ],
+      "spice": 1,
+      "type": "short",
+      "release": "Sample",
+      "access": "free",
+      "date": "2026-11-01",
+      "views": 0,
+      "likes": 0
+    },
+    {
+      "id": "psychic-seducer",
+      "file": "stories/psychic-seducer.json",
+      "title": "Psychic Seducer",
+      "description": "A college romance where emotions, secrets, and psychic gifts complicate every choice.",
+      "tags": [
+        "Paranormal",
+        "Romance",
+        "MF",
+        "Poly",
+        "Bisexual",
+        "College",
+        "Interactive"
+      ],
+      "spice": 4,
+      "type": "series",
+      "release": "Monday",
+      "access": "free",
+      "date": "2026-10-27",
+      "views": 0,
+      "likes": 0
+    },
+    {
+      "id": "ice-queen",
+      "file": "stories/ice-queen.json",
+      "title": "The Ice Queen",
+      "description": "A winter legend, a lost love, and a romance that spans centuries.",
+      "tags": [
+        "Fantasy",
+        "Paranormal",
+        "FF",
+        "Slow Burn",
+        "Historical",
+        "Romance"
+      ],
+      "spice": 2,
+      "type": "series",
+      "release": "Coming soon",
+      "access": "free",
+      "date": "2026-10-26",
+      "views": 0,
+      "likes": 0
+    },
+    {
+      "id": "starship",
+      "file": "stories/starship.json",
+      "title": "The Starship Between Us",
+      "description": "A science-fiction romance among the stars.",
+      "tags": [
+        "Sci-Fi",
+        "NB",
+        "Poly",
+        "Romance"
+      ],
+      "spice": 4,
+      "type": "short",
+      "release": "Friday",
+      "access": "free",
+      "date": "2026-10-25",
+      "views": 0,
+      "likes": 0
+    },
+    {
+      "id": "moonlight",
+      "file": "stories/moonlight.json",
+      "title": "Moonlight Bakery",
+      "description": "A little magic, a little sweetness, and a romantic surprise.",
+      "tags": [
+        "Fantasy",
+        "FF",
+        "Magic",
+        "Romance"
+      ],
+      "spice": 3,
+      "type": "short",
+      "release": "Friday",
+      "access": "free",
+      "date": "2026-10-24",
+      "views": 0,
+      "likes": 0
+    },
+    {
+      "id": "three-hearts",
+      "file": "stories/three-hearts.json",
+      "title": "Three Hearts, One Spell",
+      "description": "A magical romance with more than one happily ever after.",
+      "tags": [
+        "Fantasy",
+        "MM",
+        "Poly",
+        "Why Choose",
+        "Magic"
+      ],
+      "spice": 5,
+      "type": "short",
+      "release": "Friday",
+      "access": "free",
+      "date": "2026-10-23",
+      "views": 0,
+      "likes": 0
+    },
+    {
+      "id": "last-transmission",
+      "file": "stories/last-transmission.json",
+      "title": "The Last Transmission",
+      "description": "A quiet signal becomes a connection across the void.",
+      "tags": [
+        "Sci-Fi",
+        "MM",
+        "NB",
+        "Slow Burn"
+      ],
+      "spice": 1,
+      "type": "series",
+      "release": "Wednesday",
+      "access": "free",
+      "date": "2026-10-22",
+      "views": 0,
+      "likes": 0
+    }
+  ]
+}

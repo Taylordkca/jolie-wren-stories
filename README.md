@@ -1,19 +1,33 @@
-# Jolie Wren Stories — Reader Prototype 0.1
+# Jolie Wren Stories — v0.2
 
-Static, mobile-first prototype for GitHub Pages. No build tools needed.
+Static, mobile-first reader prototype for GitHub Pages. No build step.
 
-## Install
-Upload `index.html`, `style.css`, `script.js`, and the `stories` folder to the **root** of your `jolie-wren-stories` repository. Keep the `sample.json` file inside `stories/`.
+## Deploy
 
-Open https://taylordkca.github.io/jolie-wren-stories/ after GitHub Pages deploys.
+Upload the **contents** of this ZIP to the root of your GitHub repository, keeping the `stories/` folder intact. Replace `index.html`, `style.css`, and `script.js` from v0.1. Open your GitHub Pages URL after deployment.
 
-## Edit the sample story
-Open `stories/sample.json` in GitHub and click the pencil icon. Change the title, description, episode titles, and text. Each episode contains `blocks` of type `text`, `chapter`, or `spicy`. For spicy blocks, provide `text` and `recap`. Maintain valid JSON punctuation (double quotes, commas). For line breaks inside a JSON string, use `\\n`.
+## Add a story
 
-To add an episode, copy one episode object within the `episodes` array and give it a unique `id`. The homepage, episode navigation, and table of contents update automatically. This first prototype loads **one** story (`stories/sample.json`); multi-story library support comes next.
+1. Copy `stories/moonlight.json` to `stories/my-new-story.json`.
+2. Change its unique `id`, title, description, tags, warnings and episodes. Each episode has its own `id`, title, blocks, optional poll, notes, and spice.
+3. Add an entry to `stories/catalog.json` with the **same id** and `file` set to `stories/my-new-story.json`. The catalog entry also has type (`series` or `short`), typical spice (0–5), tags, description, release, access, date and optional views/likes.
+4. Commit both files. Your new story appears automatically. There is no need to edit HTML or JavaScript.
 
-## Important limitations
-- Votes are stored in each visitor's browser only; they are **not** aggregated across visitors, verified, or scheduled. No public vote results are shown. A backend is required for shared polls, closing times, and secure eligibility.
-- Reading position is approximate and stored in localStorage for this browser/device only. Switching reading modes attempts to preserve the nearest story block.
-- Spicy scenes in this sample are non-explicit placeholders. The skip toggle replaces marked scenes with their recaps.
-- The site is public; don't commit credentials or unpublished premium fiction.
+**Note:** This is a public GitHub Pages prototype. Do not upload premium or unpublished manuscripts, credentials, or sensitive data. The catalog `access` field is descriptive only; it does not enforce access control.
+
+## What works
+
+- Multiple stories and per-story reading progress; episode and continuous reading
+- Search by title, description, tags; multi-select All Tags page with ALL/ANY match
+- Sort by date, A–Z, typical spice, views, likes (last two use placeholder catalog values)
+- Reading list: Want to Read, Reading, Finished (saved in this browser)
+- Local likes, separate from local anonymous splash counter (not site-wide)
+- Spice guide and existing reader settings, skip scenes, sample local polls
+
+## Not connected yet
+
+Real shared vote totals, public likes/views, site-wide splash count, authentication, paid access, Google Docs importer, and automatic scheduled publishing all require additional infrastructure. The prototype poll remains browser-local.
+
+## Google Docs authoring
+
+For now, prepare one episode per tab and export/paste content into the JSON format. A mobile-friendly importer will come in a later milestone. The existing `chapter`, `text`, and `spicy` block formats are demonstrated in `stories/sample.json`.
