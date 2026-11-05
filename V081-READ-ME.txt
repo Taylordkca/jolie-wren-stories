@@ -1,0 +1,23 @@
+JOLIE WREN STORIES — V0.8.1 READER & STUDIO POLISH
+
+Upload these FOUR files to the ROOT of the existing GitHub Pages repository, replacing the old versions:
+  script.js
+  style.css
+  studio.html
+  studio.js
+
+Do NOT replace your stories/ folder, supabase-config.js, studio-cloud.js, or existing database records. No SQL migration needed.
+
+Changes:
+- Spicy scenes now appear inline with minimal controls. Skip / Show scene works both ways; voting no longer rerenders the entire reader and unexpectedly reopens skipped scenes.
+- Poll question becomes its own heading, with extra space above the voting button. No redundant 'Help decide' heading.
+- Studio preview puts poll before A Note from Jolie.
+- Cloud status messages moved directly below the Cloud publishing button row.
+- Studio story tags and story-wide warnings have tap-to-select chips, retaining manual entry.
+- Squirt maximum 3 per episode per page load, with a fresh allowance after refresh (previous sessionStorage counter survived refresh).
+- Note heading is 'A Note from Jolie'.
+
+IMPORTANT LIMITATIONS:
+- Shared votes, global reactions, automated publishing and per-episode publishing are not implemented.
+- These updates have passed JS syntax checks, but have NOT been tested against your live browser/database. Test with disposable content.
+- Existing saved browser preference 'Skip explicit scenes' still overrides the per-scene Show button. Turn it off in reader settings to use per-scene toggles.

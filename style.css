@@ -5,3 +5,6 @@
 
 /* V0.7: intentional episode endings, without disabled navigation */
 .ending-panel{text-align:center;padding:34px 12px 12px}.ending-panel h2{font:normal 30px Georgia,serif;margin:0 0 12px}.ending-panel p{color:var(--muted);line-height:1.65}.ending-panel .reader-nav{justify-content:center;align-items:center;flex-wrap:wrap;margin:24px auto 12px}.ending-panel .reader-nav button{min-width:170px}.ending-reactions .reaction-buttons{display:flex;gap:12px;flex-wrap:wrap}.ending-panel .back{margin-top:12px}
+
+/* V0.8.1 reader polish */
+.intimate-scene{margin:0;padding:0;border:0;background:transparent}.scene-tools{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:14px 0 9px;padding:7px 0;border-top:1px solid var(--line,#e5d9cf);font-family:system-ui,sans-serif;font-size:12px;color:var(--muted,#836d65)}.scene-toggle{border:0;background:transparent;color:var(--accent,#722f37);text-decoration:underline;cursor:pointer;font:inherit;padding:6px}.scene-recap{font-style:italic;color:var(--muted,#836d65)}.story-poll .poll-box{border:0;border-top:1px solid var(--line,#e5d9cf);border-bottom:1px solid var(--line,#e5d9cf);border-radius:0;padding:22px 0;background:transparent}.story-poll .poll-box h3{margin:0 0 18px;font-size:1.3em}.story-poll .poll-submit{margin-top:16px}.story-poll .poll-option{padding:12px 0}
