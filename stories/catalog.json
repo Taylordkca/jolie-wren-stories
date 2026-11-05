@@ -137,10 +137,8 @@
       "date": "2026-10-22",
       "views": 0,
       "likes": 0
-    }
-  ]
-}
-{
+    },
+      {
   "id": "testing-this",
   "file": "stories/testing-this.json",
   "title": "Testing This",
@@ -153,4 +151,8 @@
   "date": "2026-11-04",
   "views": 0,
   "likes": 0
+
+    }
+  ]
 }
+
