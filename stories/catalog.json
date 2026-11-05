@@ -140,3 +140,17 @@
     }
   ]
 }
+{
+  "id": "testing-this",
+  "file": "stories/testing-this.json",
+  "title": "Testing This",
+  "description": "A test story created using the Jolie Wren Publishing Studio.",
+  "tags": ["Romance", "Interactive"],
+  "spice": 2,
+  "type": "short",
+  "release": "Test",
+  "access": "free",
+  "date": "2026-11-04",
+  "views": 0,
+  "likes": 0
+}
