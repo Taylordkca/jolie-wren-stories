@@ -1,0 +1,1 @@
+V0.9.1: Add Episode diagnostic/error handling patch. Replace only studio.js in GitHub repository root. If button still fails, report the exact message under local editor controls and browser console error. No database changes.
