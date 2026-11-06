@@ -1,0 +1,34 @@
+JOLIE WREN STORIES V0.9 — PER-EPISODE PUBLISHING (TEST BUILD)
+
+Upload ONLY these 3 files to GitHub repository ROOT:
+ studio.html
+ studio.js
+ studio-cloud.js
+
+Keep script.js, style.css, studio.css, supabase-config.js, and stories/ unchanged.
+No Supabase SQL migration required.
+
+WHAT'S NEW
+- Episode dashboard shows each episode's saved status and author-only planned release time.
+- Save private draft / Save selected episode saves ONLY the currently selected episode, even when parent series is already published.
+- Publish selected episode publishes ONLY the currently selected completed episode immediately. Existing published episodes stay published. Publishing a previously published episode updates its live content after confirmation.
+- Empty episodes can be saved as private drafts.
+- Story tags/warnings quick chips moved outside enclosing labels to improve click/tap handling.
+- No automatic scheduling. A planned date does NOT make an episode scheduled or release it.
+- No public release dates added.
+
+TEST (USE DISPOSABLE CONTENT)
+1. Open an existing published test series. Add Episode 2 with no manuscript, Save selected episode. Confirm Episode 1 still public and Episode 2 absent.
+2. Reopen the story, write Episode 2, save it privately. Confirm Episode 2 remains absent publicly.
+3. Publish selected Episode 2. Confirm Episode 1 and 2 are readable.
+4. Add Episode 3 as an empty draft. Save it. Confirm it stays private.
+5. Tap story tags/warnings presets. Confirm their input fields change.
+
+IMPORTANT
+- Episodes are matched by episode NUMBER. Reordering/deleting existing published episodes is NOT supported yet. Do not remove or reorder them.
+- Each cloud Save operation saves the SELECTED episode, not all unsaved episodes. Save each separately.
+- If saving a newly added episode fails after story metadata saves, retry; do not assume partial failures are atomic.
+- Draft edits to an already published episode are blocked. Publishing a selected published episode replaces its live version immediately; preserve your manuscript backup.
+- Poll fallback is still in public poll metadata. Do not use this for real voting yet.
+- Scheduling, shared votes, premium access, and robust revisions are not live. Keep original manuscripts in Google Docs.
+- Browser test not yet performed; JS syntax checked.
